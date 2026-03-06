@@ -48,6 +48,9 @@ int main() {
         cin.ignore();
     } while (addAnother == 'y' || addAnother == 'Y');
 
+    printReviews(head);
+    freeList(head);
+
     return 0;
 }
 
@@ -75,4 +78,37 @@ ReviewNode* addToTail(ReviewNode* head, double rating, const char* comment) {
     }
     current->next = newNode;
     return head;
+}
+
+double printReviews(ReviewNode* head) {
+    if (head == nullptr) {
+        cout << "No reviews to output." << endl;
+        return 0.0;
+    }
+
+    cout << "Outputting all reviews:" << endl;
+    ReviewNode* current = head;
+    int count = 0;
+    double total = 0.0;
+
+    while (current != nullptr) {
+        count++;
+        total += current->rating;
+        cout << "    > Review #" << count << ": " << current->rating << ": " << current->comment << endl;
+        current = current->next;
+    }
+
+    double average = total / count;
+    cout << "    > Average: " << average << endl;
+    return average;
+}
+
+void freeList(ReviewNode*& head) {
+    ReviewNode* current = head;
+    while (current != nullptr) {
+        ReviewNode* temp = current;
+        current = current->next;
+        delete temp;
+    }
+    head = nullptr;
 }
